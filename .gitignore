@@ -1,0 +1,20 @@
+# Don't commit actual config with secrets
+openclaw.json
+
+# Personal memory (keep templates, ignore actual logs)
+workspace/memory/*.md
+!workspace/memory/.gitkeep
+
+# Personal notes that might accumulate
+workspace/MEMORY.md
+workspace/kg/*.md
+!workspace/kg/INDEX.md
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor
+*.swp
+*.swo
+*~
