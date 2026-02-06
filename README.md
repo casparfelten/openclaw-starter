@@ -36,11 +36,14 @@ This creates `~/.openclaw/` with default config.
 Run the bootstrap script (recommended, non-interactive):
 
 ```bash
+# Requirements: node>=20, npm, docker (daemon running), openclaw CLI
 export OPENAI_API_KEY=sk-...
 export TELEGRAM_BOT_TOKEN=123456:ABC...
 export TELEGRAM_ALLOW_FROM=123456789
 ./setup.sh
 ```
+
+If requirements are missing, `./setup.sh` prints what to install and exits.
 
 Or manually copy the example config:
 

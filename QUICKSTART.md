@@ -19,6 +19,8 @@ You need three things:
 
 ## 3. Configure (non-interactive)
 
+Requirements: node>=20, npm, docker (daemon running), openclaw CLI.
+
 ```bash
 export OPENAI_API_KEY=sk-...
 export TELEGRAM_BOT_TOKEN=123456:ABC...
