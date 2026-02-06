@@ -33,7 +33,16 @@ This creates `~/.openclaw/` with default config.
 
 ### Step 3: Configure
 
-Copy the example config:
+Run the bootstrap script (recommended, non-interactive):
+
+```bash
+export OPENAI_API_KEY=sk-...
+export TELEGRAM_BOT_TOKEN=123456:ABC...
+export TELEGRAM_ALLOW_FROM=123456789
+./setup.sh
+```
+
+Or manually copy the example config:
 
 ```bash
 cp openclaw.example.json ~/.openclaw/openclaw.json
@@ -106,31 +115,31 @@ A simple markdown-based knowledge graph in `workspace/kg/`.
 
 The agent will read/write to the KG to maintain context across sessions.
 
-## Configuration Reference
+## Configuration Reference (current OpenClaw schema)
 
-Key settings in `openclaw.json`:
+This starter kit targets OpenClaw v2026.2.x.
 
-| Setting | Purpose |
-|---------|---------|
-| `defaultModel` | Model for main agent (gpt-5.2) |
-| `providers.openai.apiKey` | Your OpenAI API key |
-| `channels.telegram.token` | Telegram bot token |
-| `channels.telegram.allowList` | Your Telegram user ID |
-| `sandbox.enabled` | Enable Docker sandbox for code |
-| `agents.dev.model` | Model for dev worker |
-| `agents.research.model` | Model for research worker |
+Most users should use `./setup.sh` and avoid hand-editing config keys.
+
+If you do edit config manually, the relevant keys are in:
+- `channels.telegram.botToken`
+- `channels.telegram.allowFrom` (list of allowed user ids)
+- `agents.defaults.model.primary`
+- `agents.list[]` (per-agent workspace / sandbox / tool policy)
+
+OpenAI auth is provided via the environment variable `OPENAI_API_KEY` (in `~/.openclaw/.env`).
 
 ## Troubleshooting
 
 ### Bot doesn't respond
 1. Check `openclaw gateway status`
-2. Verify bot token is correct
-3. Ensure your user ID is in allowList
+2. Verify `TELEGRAM_BOT_TOKEN` is correct
+3. Verify `TELEGRAM_ALLOW_FROM` is your numeric Telegram user id
 
 ### Code execution fails
 1. Install Docker: `docker --version`
-2. Enable sandbox in config: `sandbox.enabled: true`
-3. Check Docker is running
+2. Check Docker is running
+3. Re-run `./setup.sh` (it enables sandboxing by default for workers)
 
 ### Research agent can't browse
 1. Verify network access in research agent config

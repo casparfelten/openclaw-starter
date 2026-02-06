@@ -17,15 +17,16 @@ You need three things:
 | Telegram Bot Token | Message @BotFather on Telegram, say `/newbot` |
 | Your Telegram User ID | Message @userinfobot on Telegram |
 
-## 3. Configure
+## 3. Configure (non-interactive)
 
 ```bash
-# Copy the example config
-cp openclaw.example.json ~/.openclaw/openclaw.json
-
-# Edit and replace the placeholders
-nano ~/.openclaw/openclaw.json
+export OPENAI_API_KEY=sk-...
+export TELEGRAM_BOT_TOKEN=123456:ABC...
+export TELEGRAM_ALLOW_FROM=123456789
+./setup.sh
 ```
+
+(Manual alternative: copy `openclaw.example.json` to `~/.openclaw/openclaw.json` and fill in placeholders.)
 
 Create `~/.openclaw/.env`:
 
@@ -37,11 +38,9 @@ EOF
 chmod 600 ~/.openclaw/.env
 ```
 
-Replace these two lines in `~/.openclaw/openclaw.json`:
-```json
-"token": "YOUR_TELEGRAM_BOT_TOKEN"     → "token": "123456:ABC..."  
-"allowList": ["YOUR_TELEGRAM_USER_ID"] → "allowList": ["123456789"]
-```
+If you don’t use `./setup.sh`, then in `~/.openclaw/openclaw.json` you must set:
+- `channels.telegram.botToken`
+- `channels.telegram.allowFrom` (your numeric Telegram user id)
 
 ## 4. Set Up Workspace
 

@@ -1,89 +1,101 @@
 {
   "$schema": "https://docs.molt.bot/schema/openclaw.json",
-  
-  "_comment": "OpenClaw Starter Kit - GPT 5.2 + Telegram + Dev/Research Agents",
-  
-  "defaultModel": "openai/gpt-5.2",
-  
-  "providers": {
-    "openai": {
-      "apiKeyEnv": "OPENAI_API_KEY"
-    }
+  "meta": {
+    "lastTouchedVersion": "2026.2.1",
+    "lastTouchedAt": "2026-02-06T00:00:00.000Z"
   },
-  
-  "channels": {
-    "telegram": {
-      "enabled": true,
-      "token": "YOUR_TELEGRAM_BOT_TOKEN",
-      "allowList": ["YOUR_TELEGRAM_USER_ID"]
-    }
+  "commands": {
+    "native": "auto",
+    "nativeSkills": "auto"
   },
-  
-  "workspace": {
-    "path": "~/.openclaw/workspace"
-  },
-  
-  "sandbox": {
-    "_comment": "Enable for safe code execution in Docker container",
-    "enabled": true,
-    "image": "openclaw-sandbox:latest",
-    "networkDisabled": true,
-    "mounts": {
-      "workspace": {
-        "host": "~/.openclaw/workspace",
-        "container": "/workspace",
-        "mode": "rw"
+  "auth": {
+    "profiles": {
+      "openai:default": {
+        "provider": "openai",
+        "mode": "api_key"
       }
     }
   },
-  
-  "agents": {
-    "main": {
-      "_comment": "Primary agent - your direct assistant",
-      "model": "openai/gpt-5.2",
-      "tools": [
-        "read", "write", "edit", "exec", "process",
-        "web_search", "web_fetch",
-        "sessions_spawn", "sessions_list", "sessions_send", "sessions_history",
-        "cron", "message"
-      ]
-    },
-    
-    "dev": {
-      "_comment": "Dev worker - coding tasks, sandboxed, no network",
-      "model": "openai/gpt-5.2",
-      "sandbox": true,
-      "networkDisabled": true,
-      "tools": [
-        "read", "write", "edit", "exec", "process"
-      ]
-    },
-    
-    "research": {
-      "_comment": "Research worker - web access, sandboxed; treat output as tainted until reviewed",
-      "model": "openai/gpt-5.2",
-      "sandbox": true,
-      "networkEnabled": true,
-      "tools": [
-        "read", "write",
-        "web_search", "web_fetch", "browser"
-      ]
+  "channels": {
+    "telegram": {
+      "enabled": true,
+      "dmPolicy": "pairing",
+      "groupPolicy": "allowlist",
+      "streamMode": "partial",
+      "botToken": "YOUR_TELEGRAM_BOT_TOKEN"
     }
   },
-  
-  "heartbeat": {
-    "_comment": "Periodic check-in for proactive behavior",
-    "enabled": true,
-    "intervalMinutes": 30
-  },
-  
-  "memory": {
-    "_comment": "Memory search across workspace files",
-    "enabled": true,
-    "paths": [
-      "~/.openclaw/workspace/MEMORY.md",
-      "~/.openclaw/workspace/memory/*.md",
-      "~/.openclaw/workspace/kg/*.md"
+  "agents": {
+    "defaults": {
+      "workspace": "~/.openclaw/workspace",
+      "model": {
+        "primary": "openai/gpt-5.2",
+        "fallbacks": ["openai/gpt-4o-mini"]
+      },
+      "sandbox": {
+        "mode": "non-main",
+        "workspaceAccess": "rw",
+        "scope": "agent",
+        "docker": {
+          "image": "openclaw-sandbox:latest",
+          "network": "bridge"
+        }
+      },
+      "tools": {
+        "profile": "full",
+        "exec": {
+          "host": "sandbox",
+          "security": "allowlist",
+          "ask": "off"
+        }
+      }
+    },
+    "list": [
+      {
+        "id": "main",
+        "default": true,
+        "name": "Main",
+        "workspace": "~/.openclaw/workspace",
+        "sandbox": { "mode": "off" },
+        "tools": { "profile": "full" }
+      },
+      {
+        "id": "dev",
+        "name": "Dev",
+        "workspace": "~/.openclaw/workspace",
+        "sandbox": {
+          "mode": "all",
+          "workspaceAccess": "rw",
+          "scope": "agent",
+          "docker": {
+            "image": "openclaw-sandbox:latest",
+            "network": "bridge"
+          }
+        },
+        "tools": {
+          "profile": "coding",
+          "exec": { "host": "sandbox", "security": "allowlist", "ask": "off" }
+        }
+      },
+      {
+        "id": "research",
+        "name": "Research",
+        "workspace": "~/.openclaw/workspace",
+        "sandbox": {
+          "mode": "all",
+          "workspaceAccess": "rw",
+          "scope": "agent",
+          "docker": {
+            "image": "openclaw-sandbox:latest",
+            "network": "bridge"
+          }
+        },
+        "tools": {
+          "profile": "minimal",
+          "alsoAllow": ["group:web", "browser"],
+          "deny": ["exec"]
+        }
+      }
     ]
   }
 }
