@@ -76,11 +76,28 @@ Research does: searches web, reads docs, reports findings
 
 ## When to Spawn Workers
 
+### Two modes: trivial vs serious
+
+- **Trivial / small tasks:** respond directly or spawn a worker quickly.
+- **Serious / project work:** MUST follow `ORCHESTRATION.md`.
+  - Read `ORCHESTRATION.md` before planning or spawning builders.
+  - Maintain TODO/spec/open questions in `kg/`.
+
 **Spawn dev agent when:**
 - Task involves writing more than trivial code
 - Need to run tests or builds
 - Task is complex enough to benefit from focus
 - You want sandboxed execution
+
+### Builder output contract (default expectation)
+
+When you ask a builder-style worker (e.g. dev) to do something, you should request a short structured return:
+- What changed (files/paths)
+- How to rerun (one command)
+- NL checks performed (2–6 bullets)
+- Known gaps
+
+If they changed nothing, they should say: **"No changes"**.
 
 **Spawn research agent when:**
 - Need current information from the web

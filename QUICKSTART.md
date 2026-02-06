@@ -13,7 +13,7 @@ You need three things:
 
 | What | Where to Get It |
 |------|-----------------|
-| OpenAI API Key | https://platform.openai.com/api-keys |
+| OpenAI API Key | https://platform.openai.com/api-keys (store in `~/.openclaw/.env`) |
 | Telegram Bot Token | Message @BotFather on Telegram, say `/newbot` |
 | Your Telegram User ID | Message @userinfobot on Telegram |
 
@@ -27,9 +27,18 @@ cp openclaw.example.json ~/.openclaw/openclaw.json
 nano ~/.openclaw/openclaw.json
 ```
 
-Replace these three lines:
+Create `~/.openclaw/.env`:
+
+```bash
+chmod 700 ~/.openclaw
+cat > ~/.openclaw/.env <<'EOF'
+OPENAI_API_KEY=sk-...
+EOF
+chmod 600 ~/.openclaw/.env
+```
+
+Replace these two lines in `~/.openclaw/openclaw.json`:
 ```json
-"apiKey": "YOUR_OPENAI_API_KEY"        → "apiKey": "sk-..."
 "token": "YOUR_TELEGRAM_BOT_TOKEN"     → "token": "123456:ABC..."  
 "allowList": ["YOUR_TELEGRAM_USER_ID"] → "allowList": ["123456789"]
 ```

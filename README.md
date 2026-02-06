@@ -11,6 +11,7 @@ A minimal OpenClaw setup with:
 
 1. **Node.js 20+** - [Install guide](https://nodejs.org/)
 2. **OpenAI API key** - [Get one here](https://platform.openai.com/api-keys)
+   - Recommended: store it in `~/.openclaw/.env` as `OPENAI_API_KEY=...` (so you don’t paste keys into JSON).
 3. **Telegram bot** - Create via [@BotFather](https://t.me/BotFather)
 4. **Docker** (optional but recommended) - For sandboxed code execution
 
@@ -38,8 +39,18 @@ Copy the example config:
 cp openclaw.example.json ~/.openclaw/openclaw.json
 ```
 
+Create `~/.openclaw/.env`:
+
+```bash
+chmod 700 ~/.openclaw
+cat > ~/.openclaw/.env <<'EOF'
+OPENAI_API_KEY=sk-...
+EOF
+chmod 600 ~/.openclaw/.env
+```
+
 Edit `~/.openclaw/openclaw.json` and replace:
-- `YOUR_OPENAI_API_KEY` → your actual OpenAI API key
+- `OPENAI_API_KEY` env var (in `~/.openclaw/.env`) → your actual OpenAI API key
 - `YOUR_TELEGRAM_BOT_TOKEN` → token from BotFather
 - `YOUR_TELEGRAM_USER_ID` → your Telegram user ID (get it from [@userinfobot](https://t.me/userinfobot))
 
@@ -50,6 +61,8 @@ Copy the workspace templates:
 ```bash
 cp -r workspace/* ~/.openclaw/workspace/
 ```
+
+This includes `ORCHESTRATION.md`, which is the always-on protocol for serious/project work.
 
 Edit `~/.openclaw/workspace/USER.md` and fill in your details.
 
@@ -75,7 +88,7 @@ Spawned for coding tasks. Runs in a sandbox with:
 To use: Ask the main agent to "spawn a dev agent to [task]" or it will do so automatically for complex coding.
 
 ### Research Agent
-Spawned for web research. Runs isolated with:
+Spawned for web research. Runs sandboxed with:
 - Web search and fetch
 - Browser automation
 - Network access enabled
